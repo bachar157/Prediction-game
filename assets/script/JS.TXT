@@ -1,0 +1,72 @@
+'use strict';
+
+function onEvent(event, selector, callback) {
+    selector.addEventListener(event, callback);
+}
+
+function select(selector, parent = document) {
+    return parent.querySelector(selector);
+}
+
+const guesses_number = select('.guess-number');
+const user_guesses = select('.user-guesses');
+const buttom = select('.guess-button');
+const feedback = select('.hint');
+
+function gettingGuessesNumber() {
+    for(let i=6;i>=5;i--)
+    return i;
+}
+
+function randomNumber() {
+    const random_number = Math.floor(Math.random() * 15) + 1;
+    return random_number;
+}
+
+function disableInputAndButton() {
+  user_guesses.disabled = true;
+  buttom.disabled = true;
+}
+function displayMessage(message) {
+  feedback.innerHTML = message;
+}
+function checkGuess() {
+    const guessInput = user_guesses;
+    const guess = parseInt(guessInput.value);
+    const targetNumber = randomNumber();
+    const guesses = gettingGuessesNumber();
+    console.log(guess);
+    console.log(targetNumber);
+
+    const gameStatus = {
+        
+        correctGuess: () => guess === targetNumber,
+        outOfAttempts: () => guesses === 0,
+    };
+
+    if (guess >= 1 && guess <= 15) {
+         guesses++;
+
+        if (guess === targetNumber) {
+          displayMessage(`Congratulations! You guessed the correct number (${targetNumber}) in ${guesses} attempts.`);
+          disableInputAndButton();
+        } else if (guesses === 0) {
+          displayMessage(`Game over! The correct number was ${targetNumber}.`);
+          disableInputAndButton();
+      } else {
+          displayMessage(`Incorrect guess. You have ${5 - guesses} attempts left.`);
+      }
+  } else {
+      displayMessage(`Please enter a valid number between 1 and 15.`);
+  }
+    guessInput.value = "";
+    (guesses-1).innerHTML =guesses_number
+
+}
+
+
+       
+        
+     
+      onEvent('click',buttom,checkGuess )
+       
